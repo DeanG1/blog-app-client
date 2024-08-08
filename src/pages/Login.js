@@ -1,12 +1,51 @@
 import Reusable from "../components/Reusable";
-
+import {
+  Col,
+  Container,
+  Row,
+  Card,
+  CardBody,
+  Label,
+  Input,
+  CardHeader,
+  Form,
+  FormGroup,
+  Button,
+} from "reactstrap";
 const Login = () => {
   return (
     <Reusable>
-      <div>
-        <h1>This is Login page</h1>
-        <p>Welcome to Login page</p>
-      </div>
+      <Container>
+        <Row className="mt-4">
+          <Col sm={{ size: 6, offset: 3 }}>
+            <Card color="dark" inverse>
+              <CardHeader>
+                <h3>Login</h3>
+              </CardHeader>
+              <CardBody>
+                <Form>
+                  <FormGroup>
+                    <Label for="email">Enter Email</Label>
+                    <Input type="text" id="email" />
+                  </FormGroup>
+                  <FormGroup>
+                    <Label for="password">Enter password</Label>
+                    <Input type="password" id="password" />
+                  </FormGroup>
+                  <Container className="text-center">
+                    <Button color="light" outline>
+                      Login
+                    </Button>
+                    <Button color="secondary" className="ms-2">
+                      Reset
+                    </Button>
+                  </Container>
+                </Form>
+              </CardBody>
+            </Card>
+          </Col>
+        </Row>
+      </Container>
     </Reusable>
   );
 };
