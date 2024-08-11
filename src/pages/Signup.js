@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import Reusable from "../components/Reusable";
+import { signUp } from "../services/user-service";
 import {
   Container,
   Card,
@@ -13,6 +14,7 @@ import {
   Row,
   Col,
 } from "reactstrap";
+import { toast } from "react-toastify";
 const Signup = () => {
   const [data, setData] = useState({
     name: "",
@@ -24,9 +26,7 @@ const Signup = () => {
     errors: {},
     isError: false,
   });
-  useEffect(() => {
-    console.log(data);
-  }, [data]);
+  useEffect(() => {}, [data]);
   const handleChange = (event, property) => {
     setData({ ...data, [property]: event.target.value });
   };
@@ -42,16 +42,26 @@ const Signup = () => {
 
   const submitForm = (event) => {
     event.preventDefault();
-
-    //data validation
-
-    //call server api for sending the data
+    signUp(data)
+      .then((response) => {
+        console.log(response);
+        toast.success("User is registered succesfully!");
+        setData({
+          name: "",
+          email: "",
+          password: "",
+          about: "",
+        });
+      })
+      .catch((error) => {
+        console.log(error);
+        console.log("Error!");
+      });
   };
   return (
     <Reusable>
       <Container>
         <Row>
-          {JSON.stringify(data)}
           <Col sm={{ size: 6, offset: 3 }}>
             <Card className="mt-4" color="dark" inverse>
               <CardHeader>
