@@ -52,7 +52,7 @@ function CustomNavbar(args) {
               <DropdownToggle caret nav>
                 More
               </DropdownToggle>
-              <DropdownMenu right>
+              <DropdownMenu end>
                 <DropdownItem tag={ReactLink} to="/services">
                   Services
                 </DropdownItem>
