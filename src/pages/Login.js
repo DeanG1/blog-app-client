@@ -14,6 +14,7 @@ import {
 } from "reactstrap";
 import { toast } from "react-toastify";
 import { useState } from "react";
+import { doLogin } from "../auth";
 import { loginUser } from "../services/user-service";
 const Login = () => {
   const [loginDetail, setLoginDetail] = useState({
@@ -40,6 +41,9 @@ const Login = () => {
     loginUser(loginDetail)
       .then((data) => {
         console.log(data);
+        doLogin(data, () => {
+          console.log("Login detail is saved to local storage");
+        });
         toast.success("Login Success");
       })
       .catch((error) => {
