@@ -12,57 +12,102 @@ import {
   DropdownItem,
   NavbarText,
 } from "reactstrap";
-import { useState } from "react";
-import { NavLink as ReactLink } from "react-router-dom";
+import { doLogout } from "../auth";
+import { useEffect, useState } from "react";
+import { NavLink as ReactLink, useNavigate } from "react-router-dom";
+import { isLoggedIn } from "../auth";
+import { getCurrentUserDetail } from "../auth";
 function CustomNavbar(args) {
+  let navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
   const toogle = () => setIsOpen(!isOpen);
+
+  const [login, setLogin] = useState(false);
+  const [user, setUser] = useState(undefined);
+  useEffect(() => {
+    setLogin(isLoggedIn());
+    setUser(getCurrentUserDetail());
+  }, [login]);
+
+  const logout = () => {
+    doLogout(() => {
+      //logged out
+      setLogin(false);
+      navigate("/login");
+    });
+  };
+
   return (
-    <div>
-      <Navbar color="dark" dark expand="md" fixed="" className="px-5">
-        <NavbarBrand tag={ReactLink} to="/">
-          MyBlogs
-        </NavbarBrand>
-        <NavbarToggler onClick={() => toogle()} />
+    <Navbar className="px-5" color="dark" dark expand="md" fixed="">
+      <NavbarBrand tag={ReactLink} to="/">
+        MyBlogs
+      </NavbarBrand>
+      <NavbarToggler onClick={() => toogle()} />
 
-        <Collapse isOpen={isOpen} navbar>
-          <Nav className="me-auto" navbar>
-            <NavItem>
-              <NavLink tag={ReactLink} to="/home">
-                Home
-              </NavLink>
-            </NavItem>
-            <NavItem>
-              <NavLink tag={ReactLink} to="/about">
-                About
-              </NavLink>
-            </NavItem>
-            <NavItem>
-              <NavLink tag={ReactLink} to="/login">
-                Login
-              </NavLink>
-            </NavItem>
-            <NavItem>
-              <NavLink tag={ReactLink} to="/signup">
-                Signup
-              </NavLink>
-            </NavItem>
-
-            <UncontrolledDropdown inNavbar nav>
-              <DropdownToggle caret nav>
-                More
-              </DropdownToggle>
-              <DropdownMenu end>
-                <DropdownItem tag={ReactLink} to="/services">
-                  Services
-                </DropdownItem>
-                <DropdownItem>Contact Us</DropdownItem>
-              </DropdownMenu>
-            </UncontrolledDropdown>
-          </Nav>
-        </Collapse>
-      </Navbar>
-    </div>
+      <Collapse isOpen={isOpen} navbar>
+        <Nav className="me-auto" navbar>
+          <NavItem>
+            <NavLink tag={ReactLink} to="/">
+              New Feed
+            </NavLink>
+          </NavItem>
+          <NavItem>
+            <NavLink tag={ReactLink} to="/about">
+              About
+            </NavLink>
+          </NavItem>
+          <NavItem>
+            <NavLink tag={ReactLink} to="/services">
+              Services
+            </NavLink>
+          </NavItem>
+          <UncontrolledDropdown inNavbar nav>
+            <DropdownToggle caret nav>
+              More
+            </DropdownToggle>
+            <DropdownMenu end>
+              <DropdownItem tag={ReactLink} to="/contact">
+                Contact Us
+              </DropdownItem>
+              <DropdownItem>Facebook</DropdownItem>
+            </DropdownMenu>
+          </UncontrolledDropdown>
+        </Nav>
+        <Nav navbar>
+          {login && (
+            <>
+              <NavItem>
+                <NavLink tag={ReactLink} to="/user/profile">
+                  Profile
+                </NavLink>
+              </NavItem>
+              <NavItem>
+                <NavLink tag={ReactLink} to="/user/dashboard">
+                  {user.email}
+                </NavLink>
+              </NavItem>
+              <NavItem>
+                <NavLink onClick={logout}>Logout</NavLink>
+              </NavItem>
+            </>
+          )}
+          {!login && (
+            <>
+              <NavItem>
+                <NavLink tag={ReactLink} to="/login">
+                  Login
+                </NavLink>
+              </NavItem>
+              <NavItem>
+                <NavLink tag={ReactLink} to="/signup">
+                  Signup
+                </NavLink>
+              </NavItem>
+            </>
+          )}
+        </Nav>
+      </Collapse>
+    </Navbar>
   );
 }
 
