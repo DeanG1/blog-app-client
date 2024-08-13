@@ -1,7 +1,12 @@
 import React from "react";
+import Reusable from "../../components/Reusable";
 
 const Profile = () => {
-  return <div>Profile</div>;
+  return (
+    <Reusable>
+      <h1>Profile</h1>
+    </Reusable>
+  );
 };
 
 export default Profile;
