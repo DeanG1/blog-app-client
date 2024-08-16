@@ -1,5 +1,5 @@
 import { privateAxios } from "./helper";
-
+import { myAxios } from "./helper";
 export const createPost = (postData) => {
   return privateAxios
     .post(
@@ -14,4 +14,8 @@ export const createPost = (postData) => {
       );
       throw error;
     });
+};
+//get all posts
+export const loadAllPosts = () => {
+  return myAxios.get(`/posts`).then((response) => response.data);
 };

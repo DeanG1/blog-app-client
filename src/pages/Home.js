@@ -1,12 +1,12 @@
+import NewFeed from "../components/NewFeed";
 import Reusable from "../components/Reusable";
-
+import { Container } from "reactstrap";
 const Home = () => {
   return (
     <Reusable>
-      <div>
-        <h1>This is Home page</h1>
-        <p>Welcome to home page</p>
-      </div>
+      <Container className="mt-3">
+        <NewFeed />
+      </Container>
     </Reusable>
   );
 };

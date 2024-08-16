@@ -1,0 +1,22 @@
+import React from "react";
+import { Card, CardBody, Button, CardText, Container } from "reactstrap";
+function Post({
+  post = {
+    title: "This is default post title",
+    content: "This is default post content",
+  },
+}) {
+  return (
+    <Card className="border-0 shadow-md mt-3">
+      <CardBody>
+        <h1>{post.title}</h1>
+        <CardText>{post.content.substring(0, 30)}...</CardText>
+        <Container>
+          <Button>Read More</Button>
+        </Container>
+      </CardBody>
+    </Card>
+  );
+}
+
+export default Post;
