@@ -10,7 +10,9 @@ function Post({
     <Card className="border-0 shadow-md mt-3">
       <CardBody>
         <h1>{post.title}</h1>
-        <CardText>{post.content.substring(0, 30)}...</CardText>
+        <CardText
+          dangerouslySetInnerHTML={{ __html: post.content.substring(0, 30) }}
+        ></CardText>
         <Container>
           <Button>Read More</Button>
         </Container>
