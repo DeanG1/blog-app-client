@@ -27,3 +27,8 @@ export const loadAllPosts = (pageNumber, pageSize) => {
 export const loadPost = (postId) => {
   return myAxios.get("/posts/" + postId).then((response) => response.data);
 };
+
+//create comment
+export const createComment = (comment, postId) => {
+  return privateAxios.post(`/post/${postId}/comments`, comment);
+};
