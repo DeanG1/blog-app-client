@@ -1,4 +1,3 @@
-import { useContext } from "react";
 import { useEffect } from "react";
 import { useState } from "react";
 import { NavLink as ReactLink, useNavigate } from "react-router-dom";
@@ -14,7 +13,6 @@ import {
   DropdownToggle,
   DropdownMenu,
   DropdownItem,
-  NavbarText,
 } from "reactstrap";
 import { doLogout, getCurrentUserDetail, isLoggedIn } from "../auth";
 
