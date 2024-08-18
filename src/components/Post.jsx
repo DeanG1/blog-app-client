@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { Card, CardBody, Button, CardText, Container } from "reactstrap";
+import { Card, CardBody, CardText, Container } from "reactstrap";
 function Post({
   post = {
     title: "This is default post title",
