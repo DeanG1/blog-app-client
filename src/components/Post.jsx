@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { Card, CardBody, CardText, Container } from "reactstrap";
@@ -6,6 +6,7 @@ import { getCurrentUserDetail, isLoggedIn } from "../auth";
 import { Button } from "reactstrap";
 import { deletePost } from "../services/post-service";
 import { toast } from "react-toastify";
+import userContext from "../context/userContext";
 function Post({
   post = {
     id: -1,
@@ -14,6 +15,7 @@ function Post({
   },
   deletePost,
 }) {
+  const userContextData = useContext(userContext);
   const [user, setUser] = useState(null);
   const [login, setLogin] = useState(null);
   useEffect(() => {
@@ -36,7 +38,7 @@ function Post({
             >
               Read More
             </Link>
-            {isLoggedIn &&
+            {userContextData.user.login &&
               (user && user.id === post.user.id ? (
                 <Button
                   onClick={() => deletePost(post)}
