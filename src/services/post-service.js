@@ -63,3 +63,10 @@ export function deletePostService(postId) {
     .delete(`/posts/${postId}`)
     .then((response) => response.data);
 }
+//Update post
+export function updatePost(post, postId) {
+  console.log(post);
+  return privateAxios
+    .put(`/posts/${postId}`, post)
+    .then((response) => response.data);
+}
