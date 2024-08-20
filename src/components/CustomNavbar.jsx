@@ -31,7 +31,7 @@ const CustomNavbar = () => {
     doLogout(() => {
       //logged out
       setLogin(false);
-      navigate("/");
+      navigate("/login");
     });
   };
 
