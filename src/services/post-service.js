@@ -51,3 +51,15 @@ export const loadPostCategoryWise = (categoryId) => {
     .get(`/category/${categoryId}/posts`)
     .then((response) => response.data);
 };
+//Get posts wise user
+export function loadPostUserWise(userId) {
+  return privateAxios
+    .get(`/user/${userId}/posts`)
+    .then((response) => response.data);
+}
+//Delete post
+export function deletePostService(postId) {
+  return privateAxios
+    .delete(`/posts/${postId}`)
+    .then((response) => response.data);
+}
