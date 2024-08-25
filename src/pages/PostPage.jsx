@@ -1,5 +1,5 @@
 import Reusable from "../components/Reusable";
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import {
   Container,
   Row,
@@ -9,34 +9,64 @@ import {
   CardText,
   Button,
   Input,
+  Modal,
+  ModalHeader,
+  ModalBody,
+  ModalFooter,
 } from "reactstrap";
-import { isLoggedIn } from "../auth";
-import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { createComment, loadPost } from "../services/post-service";
+import { isLoggedIn } from "../auth";
+import {
+  createComment,
+  loadPost,
+  deleteComment as deleteCommentService,
+} from "../services/post-service";
 import { toast } from "react-toastify";
 import { BASE_URL } from "../services/helper";
+
 const PostPage = () => {
   const { postId } = useParams();
   const [post, setPost] = useState(null);
-  const [comment, setComment] = useState({
-    content: "",
-  });
+  const [comment, setComment] = useState({ content: "" });
+  const [modal, setModal] = useState(false);
+  const [commentToDelete, setCommentToDelete] = useState(null);
+
   useEffect(() => {
-    //load the post by postId
     loadPost(postId)
       .then((data) => {
-        console.log(data);
         setPost(data);
       })
       .catch((error) => {
-        console.log(error);
         toast.error("Error when loading post!");
       });
-  }, []);
+  }, [postId]);
 
-  const printDate = (numbers) => {
-    return new Date(numbers).toLocaleString();
+  const toggleModal = (commentId) => {
+    setCommentToDelete(commentId);
+    setModal(!modal);
+  };
+
+  const handleDelete = () => {
+    if (!isLoggedIn()) {
+      toast.error("Need to login first");
+      setModal(false);
+      return;
+    }
+    deleteCommentService(commentToDelete)
+      .then(() => {
+        toast.success("Comment deleted!");
+        setPost({
+          ...post,
+          comments: post.comments.filter(
+            (comment) => comment.commentId !== commentToDelete
+          ),
+        });
+        setModal(false);
+      })
+      .catch((error) => {
+        toast.error("Error deleting the comment!");
+        setModal(false);
+      });
   };
 
   const submitPost = () => {
@@ -44,26 +74,23 @@ const PostPage = () => {
       toast.error("Need to login first");
       return;
     }
-    //If there is no written comment return
     if (comment.content.trim() === "") {
       return;
     }
     createComment(comment, post.postId)
       .then((data) => {
-        console.log(data);
         toast.success("Comment added!");
         setPost({
           ...post,
           comments: [...post.comments, data.data],
         });
-        setComment({
-          content: "",
-        });
+        setComment({ content: "" });
       })
       .catch((error) => {
-        console.log(error);
+        toast.error("Error adding comment!");
       });
   };
+
   return (
     <Reusable>
       <Container className="mt-4">
@@ -75,11 +102,10 @@ const PostPage = () => {
                 <CardBody>
                   <CardText>
                     Posted by: <b>{post.user.name}</b> on
-                    <b> {printDate(post.addedDate)}</b>
+                    <b> {new Date(post.addedDate).toLocaleString()}</b>
                   </CardText>
                   <CardText>
                     <span className="text-muted">
-                      {" "}
                       Category : {post.category.categoryTitle}
                     </span>
                   </CardText>
@@ -120,7 +146,20 @@ const PostPage = () => {
               post.comments.map((comment, index) => (
                 <Card className="mt-4 border-0" key={index}>
                   <CardBody>
-                    <CardText>{comment.content}</CardText>
+                    <CardText
+                      style={{
+                        wordWrap: "break-word",
+                        whiteSpace: "pre-wrap",
+                      }}
+                    >
+                      {comment.content}
+                    </CardText>
+                    <Button
+                      color="danger"
+                      onClick={() => toggleModal(comment.commentId)}
+                    >
+                      X
+                    </Button>
                   </CardBody>
                 </Card>
               ))}
@@ -141,8 +180,23 @@ const PostPage = () => {
             </Card>
           </Col>
         </Row>
+        <Modal isOpen={modal} toggle={() => toggleModal(null)}>
+          <ModalHeader toggle={() => toggleModal(null)}>
+            Confirm Delete
+          </ModalHeader>
+          <ModalBody>Are you sure you want to delete this comment?</ModalBody>
+          <ModalFooter>
+            <Button color="danger" onClick={handleDelete}>
+              Yes
+            </Button>{" "}
+            <Button color="secondary" onClick={() => toggleModal(null)}>
+              No
+            </Button>
+          </ModalFooter>
+        </Modal>
       </Container>
     </Reusable>
   );
 };
+
 export default PostPage;
