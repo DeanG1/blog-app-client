@@ -32,7 +32,12 @@ export const loadPost = (postId) => {
 export const createComment = (comment, postId) => {
   return privateAxios.post(`/post/${postId}/comments`, comment);
 };
-
+//delete comment
+export const deleteComment = (commentId) => {
+  return privateAxios
+    .delete(`/comments/${commentId}`)
+    .then((response) => response.data);
+};
 //upload post image
 export const uploadPostImage = (image, postId) => {
   let formData = new FormData();
