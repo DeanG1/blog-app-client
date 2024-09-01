@@ -63,9 +63,11 @@ export function loadPostUserWise(userId) {
     .then((response) => response.data);
 }
 //Delete post
-export function deletePostService(postId) {
+export function deletePostService(postId, userId) {
   return privateAxios
-    .delete(`/posts/${postId}`)
+    .delete(`/posts/${postId}`, {
+      params: { userId: userId },
+    })
     .then((response) => response.data);
 }
 //Update post
