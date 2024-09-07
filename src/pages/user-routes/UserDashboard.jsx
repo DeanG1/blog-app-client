@@ -1,6 +1,5 @@
 import React from "react";
 import Reusable from "../../components/Reusable";
-import AddPost from "../../components/AddPost";
 import { Container } from "reactstrap";
 import { useState, useEffect } from "react";
 import { getCurrentUserDetail } from "../../auth";
@@ -47,7 +46,6 @@ const UserDashboard = () => {
   return (
     <Reusable>
       <Container>
-        <AddPost />
         <h1 className="mt-3">Posts Count: ({posts.length})</h1>
         {posts.map((post, index) => {
           return <Post deletePost={deletePost} post={post} key={index} />;

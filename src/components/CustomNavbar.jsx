@@ -67,8 +67,8 @@ const CustomNavbar = () => {
               </NavLink>
             </NavItem>
             <NavItem>
-              <NavLink tag={ReactLink} to="/services">
-                Services
+              <NavLink tag={ReactLink} to="/createpost">
+                Create Post
               </NavLink>
             </NavItem>
             <UncontrolledDropdown inNavbar nav>
